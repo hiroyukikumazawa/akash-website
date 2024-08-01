@@ -3,14 +3,17 @@ import Layout from "@/layouts/layout.astro";
 import GpuTable from "@/components/gpu-table/gpu-table";
 import { gpus } from "@/utils/api";
 
+const astroUrl = Astro.url;
+const pathName = astroUrl.pathname.split("/");
 // const response = await fetch(gpus);
 // const data = await response.json();
 ---
+
 
 <Layout
   title="  GPU Availability and Pricing"
   description="  GPU Availability and Pricing"
   image="/meta-images/gpus.png"
 >
-  <GpuTable client:load initialData={null} />
+  <GpuTable client:load initialData={null} pathName={pathName}/>
 </Layout>

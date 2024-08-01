@@ -18,6 +18,7 @@ import Filter, { defaultFilters, type Filters } from "./filter";
 import Sort from "./sort";
 import { useStorage } from "@/utils/store";
 import { Skeleton } from "../ui/skeleton";
+import Nav from "./nav";
 export interface Gpus {
   availability: { total: number; available: number };
   models: Array<{
@@ -40,9 +41,11 @@ export interface Gpus {
 
 const GpuTable = ({
   initialData,
+  pathName,
   subCom,
 }: {
   initialData?: any;
+  pathName?: any;
   subCom?: boolean;
 }) => {
   const queryClient = new QueryClient();
@@ -53,6 +56,7 @@ const GpuTable = ({
         initialData={{
           data: initialData,
         }}
+        pathName={pathName}
         subCom={subCom}
       />
     </QueryClientProvider>
@@ -63,11 +67,13 @@ export default GpuTable;
 
 const Table = ({
   initialData,
+  pathName,
   subCom,
 }: {
   initialData?: {
     data: any;
   };
+  pathName?:any;
   subCom?: boolean;
 }) => {
   const fetchInterval = 1000 * 60;
@@ -96,6 +102,7 @@ const Table = ({
     <Tables
       data={data}
       subCom={subCom}
+      pathName={pathName}
       isLoading={isLoading || isInitialLoading}
     />
   );
@@ -105,8 +112,8 @@ export const modifyModel = (model: string) => {
   return model === "rtxa6000"
     ? "A6000"
     : model?.includes("rtx")
-    ? model?.replace("rtx", "RTX ").replace("ti", " Ti")
-    : model;
+      ? model?.replace("rtx", "RTX ").replace("ti", " Ti")
+      : model;
 };
 
 export const price = (price: number) => {
@@ -115,16 +122,19 @@ export const price = (price: number) => {
 
 export const Tables = ({
   data,
+  pathName,
   subCom,
   isLoading,
 }: {
   data?: Gpus;
+  pathName?: any;
   subCom?: boolean;
   isLoading?: boolean;
 }) => {
   const [filteredData, setFilteredData] = React.useState<Gpus["models"]>([]);
   const [filters, setFilters] = React.useState<Filters>(defaultFilters);
-  console.log(filteredData);
+  console.log(pathName);
+
 
   return (
     <section
@@ -133,15 +143,11 @@ export const Tables = ({
         subCom ? "" : "container pt-[80px]",
       )}
     >
-      <h1
-        className={clsx(
-          " text-lg font-medium ",
-          subCom ? "md:text-xl " : "  md:text-xl",
-        )}
-      >
-        GPU Availability and Pricing
+      <h1 className="text-2xl font-bold md:block md:text-2lg lg:text-3lg text-center lg:leading-[52px]">
+        Explorer pricing and calculate<br /> your costs or earnings
       </h1>
-      <div className="flex flex-col gap-4 ">
+      <Nav pathName={pathName} />
+      {/* <div className="flex flex-col gap-4 ">
         <div
           className={clsx(
             "flex flex-col justify-between gap-8 ",
@@ -178,7 +184,7 @@ export const Tables = ({
             />
           </div>
         </div>
-      </div>
+      </div> */}
       <div
         className={clsx(
           "flex flex-col gap-4 ",
@@ -189,102 +195,102 @@ export const Tables = ({
 
         {isLoading
           ? new Array(10).fill(0).map((_, index) => (
-              <div
-                key={index}
-                className="flex flex-col gap-5  rounded-xl border bg-background2  p-3 shadow-sm"
-              >
-                <div className="flex  items-center gap-3 p-2 ">
-                  <Skeleton className="h-5 w-5" />
+            <div
+              key={index}
+              className="flex flex-col gap-5  rounded-xl border bg-background2  p-3 shadow-sm"
+            >
+              <div className="flex  items-center gap-3 p-2 ">
+                <Skeleton className="h-5 w-5" />
+                <Skeleton className="h-5 w-20" />
+              </div>
+              <div className="h-px w-full bg-border"></div>
+              <div className=" flex  flex-col gap-2">
+                <div className="flex items-center justify-between gap-1">
+                  <Skeleton className="h-5 w-20" />
                   <Skeleton className="h-5 w-20" />
                 </div>
-                <div className="h-px w-full bg-border"></div>
-                <div className=" flex  flex-col gap-2">
-                  <div className="flex items-center justify-between gap-1">
-                    <Skeleton className="h-5 w-20" />
-                    <Skeleton className="h-5 w-20" />
-                  </div>
-                  <div className="flex items-center justify-between gap-1">
-                    <Skeleton className="h-5 w-20" />
-                    <Skeleton className="h-5 w-20" />
-                  </div>
-                  <div className="flex items-center justify-between gap-1">
-                    <Skeleton className="h-5 w-20" />
-                    <Skeleton className="h-5 w-20" />
+                <div className="flex items-center justify-between gap-1">
+                  <Skeleton className="h-5 w-20" />
+                  <Skeleton className="h-5 w-20" />
+                </div>
+                <div className="flex items-center justify-between gap-1">
+                  <Skeleton className="h-5 w-20" />
+                  <Skeleton className="h-5 w-20" />
+                </div>
+              </div>
+              <div className="h-px w-full bg-border"></div>
+              <div className="flex flex-col items-start gap-1 ">
+                <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
+                  <Skeleton className="h-5 w-20" />
+                </div>
+                <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
+                  <div className="flex items-center gap-1">
+                    <HoverCard openDelay={2} closeDelay={2}>
+                      <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
+                        <p className="flex items-center">
+                          <span className="text-base text-[#D7DBDF] dark:text-[#3E3E3E] md:text-xs">
+                            Avg:
+                          </span>
+                          <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
+                            <Skeleton className="h-5 w-20" />
+                          </span>
+                        </p>
+                        <Info
+                          size={12}
+                          className="text-[#D7DBDF] dark:text-[#3E3E3E]"
+                        />
+                      </HoverCardTrigger>
+                    </HoverCard>
                   </div>
                 </div>
-                <div className="h-px w-full bg-border"></div>
-                <div className="flex flex-col items-start gap-1 ">
-                  <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-                    <Skeleton className="h-5 w-20" />
-                  </div>
-                  <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
-                    <div className="flex items-center gap-1">
-                      <HoverCard openDelay={2} closeDelay={2}>
-                        <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
-                          <p className="flex items-center">
-                            <span className="text-base text-[#D7DBDF] dark:text-[#3E3E3E] md:text-xs">
-                              Avg:
-                            </span>
-                            <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
-                              <Skeleton className="h-5 w-20" />
-                            </span>
-                          </p>
-                          <Info
-                            size={12}
-                            className="text-[#D7DBDF] dark:text-[#3E3E3E]"
-                          />
-                        </HoverCardTrigger>
-                      </HoverCard>
-                    </div>
-                  </div>
 
-                  <div className="rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-                    <Skeleton className="h-5 w-20" />
-                  </div>
+                <div className="rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
+                  <Skeleton className="h-5 w-20" />
                 </div>
               </div>
-            ))
+            </div>
+          ))
           : filteredData?.map((model, index) => (
-              <div
-                key={index}
-                className="flex flex-col gap-5  rounded-xl border bg-background2  p-3 shadow-sm"
-              >
-                <div className="flex  items-center gap-3 p-2 ">
-                  <img src="/logos/nvidia.png" alt="nvidia" className="h-6 " />
-                  <h1 className="text-2xl font-semibold capitalize">
-                    {modifyModel(model?.model)}
-                  </h1>
-                </div>
-                <div className="h-px w-full bg-border"></div>
-                <div className=" flex  flex-col gap-2">
-                  <div className="flex items-center justify-between gap-1">
-                    <p className="text-xs font-medium text-iconText">vRAM:</p>
-                    <p className="text-xs font-semibold">{model?.ram}</p>
-                  </div>
-                  <div className="flex items-center justify-between gap-1">
-                    <p className="text-xs font-medium text-iconText">
-                      Interface:
-                    </p>
-                    <p className="text-xs font-semibold">{model?.interface}</p>
-                  </div>
-                  <div className="flex items-center justify-between gap-1">
-                    <p className="text-xs font-medium text-iconText">
-                      Availability:
-                    </p>
-                    <p className="">
-                      <span className="text-sm  font-semibold text-foreground">
-                        {model?.availability?.available}
-                      </span>
-                      <span className="pl-2 text-xs text-iconText">
-                        (of {model?.availability?.total})
-                      </span>
-                    </p>
-                  </div>
-                </div>
-                <div className="h-px w-full bg-border"></div>
-                <CustomHoverCard model={model} />
+            <div
+              key={index}
+              className="flex flex-col gap-5  rounded-xl border bg-background2  p-3 shadow-sm"
+            >
+              <div className="flex  items-center gap-3 p-2 ">
+                <img src="/logos/nvidia.png" alt="nvidia" className="h-6 " />
+                <h1 className="text-2xl font-semibold capitalize">
+                  {modifyModel(model?.model)}
+                </h1>
               </div>
-            ))}
+              <div className="h-px w-full bg-border"></div>
+              <div className=" flex  flex-col gap-2">
+                <div className="flex items-center justify-between gap-1">
+                  <p className="text-xs font-medium text-iconText">vRAM:</p>
+                  <p className="text-xs font-semibold">{model?.ram}</p>
+                </div>
+                <div className="flex items-center justify-between gap-1">
+                  <p className="text-xs font-medium text-iconText">
+                    Interface:
+                  </p>
+                  <p className="text-xs font-semibold">{model?.interface}</p>
+                </div>
+                <div className="flex items-center justify-between gap-1">
+                  <p className="text-xs font-medium text-iconText">
+                    Availability:
+                  </p>
+                  <p className="">
+                    <span className="text-sm  font-semibold text-foreground">
+                      {model?.availability?.available}
+                    </span>
+                    <span className="pl-2 text-xs text-iconText">
+                      (of {model?.availability?.total})
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="h-px w-full bg-border"></div>
+              <CustomHoverCard model={model} />
+            </div>
+          ))}
       </div>
 
       <div
@@ -322,116 +328,116 @@ export const Tables = ({
           <tbody className="mt-1 ">
             {isLoading
               ? new Array(10).fill(0).map((_, index) => (
-                  <tr
-                    key={index}
-                    className=" overflow-hidden rounded-lg  bg-background2 shadow-sm"
+                <tr
+                  key={index}
+                  className=" overflow-hidden rounded-lg  bg-background2 shadow-sm"
+                >
+                  <td
+                    className={clsx(
+                      " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg",
+                      subCom
+                        ? "w-[30%] lg:w-[27%] xl:w-[35%] 2xl:w-[38%] "
+                        : "w-[30%] lg:w-[38%] xl:w-[39%]",
+                    )}
                   >
-                    <td
-                      className={clsx(
-                        " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg",
-                        subCom
-                          ? "w-[30%] lg:w-[27%] xl:w-[35%] 2xl:w-[38%] "
-                          : "w-[30%] lg:w-[38%] xl:w-[39%]",
-                      )}
-                    >
-                      <div className="flex items-center gap-3 capitalize">
-                        <Skeleton className="h-5 w-5" />
+                    <div className="flex items-center gap-3 capitalize">
+                      <Skeleton className="h-5 w-5" />
+                      <Skeleton className="h-5 w-20" />
+                    </div>
+                  </td>
+
+                  <td className=" w-[14%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
+                    <Skeleton className="h-5 w-20" />
+                  </td>
+                  <td className=" w-[14%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
+                    <Skeleton className="h-5 w-20" />
+                  </td>
+                  <td className="w-[14%]  border-y px-2 py-2 text-left">
+                    <p className="flex items-center gap-1.5">
+                      <Skeleton className="h-5 w-20" />
+                    </p>
+                  </td>
+
+                  <td className="  rounded-r-lg border-y border-r   pr-2 ">
+                    <div className="flex flex-col items-start gap-1 ">
+                      <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
                         <Skeleton className="h-5 w-20" />
                       </div>
-                    </td>
-
-                    <td className=" w-[14%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
-                      <Skeleton className="h-5 w-20" />
-                    </td>
-                    <td className=" w-[14%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
-                      <Skeleton className="h-5 w-20" />
-                    </td>
-                    <td className="w-[14%]  border-y px-2 py-2 text-left">
-                      <p className="flex items-center gap-1.5">
-                        <Skeleton className="h-5 w-20" />
-                      </p>
-                    </td>
-
-                    <td className="  rounded-r-lg border-y border-r   pr-2 ">
-                      <div className="flex flex-col items-start gap-1 ">
-                        <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-                          <Skeleton className="h-5 w-20" />
-                        </div>
-                        <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
-                          <div className="flex items-center gap-1">
-                            <HoverCard openDelay={2} closeDelay={2}>
-                              <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
-                                <p className="flex items-center">
-                                  <span
-                                    className="dark:text-[#3 E3E3E] text-base
+                      <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
+                        <div className="flex items-center gap-1">
+                          <HoverCard openDelay={2} closeDelay={2}>
+                            <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
+                              <p className="flex items-center">
+                                <span
+                                  className="dark:text-[#3 E3E3E] text-base
                         text-[#D7DBDF] md:text-xs"
-                                  >
-                                    Avg:
-                                  </span>
-                                  <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
-                                    <Skeleton className="h-5 w-20" />
-                                  </span>
-                                </p>
-                                <Info
-                                  size={12}
-                                  className="text-[#D7DBDF] dark:text-[#3E3E3E]"
-                                />
-                              </HoverCardTrigger>
-                            </HoverCard>
-                          </div>
-                        </div>
-                        <div className="rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-                          <Skeleton className="h-5 w-20" />
+                                >
+                                  Avg:
+                                </span>
+                                <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
+                                  <Skeleton className="h-5 w-20" />
+                                </span>
+                              </p>
+                              <Info
+                                size={12}
+                                className="text-[#D7DBDF] dark:text-[#3E3E3E]"
+                              />
+                            </HoverCardTrigger>
+                          </HoverCard>
                         </div>
                       </div>
-                    </td>
-                  </tr>
-                ))
+                      <div className="rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
+                        <Skeleton className="h-5 w-20" />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))
               : filteredData?.map((model, index) => (
-                  <tr
-                    key={index}
-                    className=" overflow-hidden rounded-lg  bg-background2 shadow-sm"
+                <tr
+                  key={index}
+                  className=" overflow-hidden rounded-lg  bg-background2 shadow-sm"
+                >
+                  <td
+                    className={clsx(
+                      " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg",
+                      subCom
+                        ? "w-[30%] lg:w-[27%] xl:w-[35%] 2xl:w-[38%] "
+                        : "w-[30%] lg:w-[38%] xl:w-[39%]",
+                    )}
                   >
-                    <td
-                      className={clsx(
-                        " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg",
-                        subCom
-                          ? "w-[30%] lg:w-[27%] xl:w-[35%] 2xl:w-[38%] "
-                          : "w-[30%] lg:w-[38%] xl:w-[39%]",
-                      )}
-                    >
-                      <div className="flex items-center gap-3 capitalize">
-                        <img
-                          src="/logos/nvidia.png"
-                          alt="nvidia"
-                          className="h-5 "
-                        />
-                        {modifyModel(model?.model)}
-                      </div>
-                    </td>
+                    <div className="flex items-center gap-3 capitalize">
+                      <img
+                        src="/logos/nvidia.png"
+                        alt="nvidia"
+                        className="h-5 "
+                      />
+                      {modifyModel(model?.model)}
+                    </div>
+                  </td>
 
-                    <td className=" w-[14%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
-                      {model?.ram}
-                    </td>
-                    <td className=" w-[14%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
-                      {model?.interface}
-                    </td>
-                    <td className="w-[14%]  border-y px-2 py-2 text-left">
-                      <p className="flex items-center gap-1.5">
-                        <span className="text-sm  font-semibold text-foreground">
-                          {model?.availability?.available}
-                        </span>
-                        <span className=" text-xs text-iconText">
-                          (of {model?.availability?.total})
-                        </span>
-                      </p>
-                    </td>
+                  <td className=" w-[14%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
+                    {model?.ram}
+                  </td>
+                  <td className=" w-[14%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
+                    {model?.interface}
+                  </td>
+                  <td className="w-[14%]  border-y px-2 py-2 text-left">
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-sm  font-semibold text-foreground">
+                        {model?.availability?.available}
+                      </span>
+                      <span className=" text-xs text-iconText">
+                        (of {model?.availability?.total})
+                      </span>
+                    </p>
+                  </td>
 
-                    <td className="  rounded-r-lg border-y border-r   pr-2 ">
-                      <CustomHoverCard model={model} />
-                    </td>
-                  </tr>
-                ))}
+                  <td className="  rounded-r-lg border-y border-r   pr-2 ">
+                    <CustomHoverCard model={model} />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
