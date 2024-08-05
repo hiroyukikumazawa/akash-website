@@ -19,6 +19,7 @@ import { privacySchema } from "@/utils/schema/privacy";
 import { providersPage } from "@/utils/schema/provides_page";
 import { tokenPage } from "@/utils/schema/token_page";
 import { defineCollection, z } from "astro:content";
+import { Description } from "node_modules/@headlessui/react/dist/components/description/description";
 
 //homepage schema
 const homePage = defineCollection({
@@ -227,10 +228,27 @@ const blog = defineCollection({
     });
   },
 });
+//case-studies schema
+const caseStudiesPage = defineCollection({
+  schema: ({ image }) => {
+    return z.object({
+      pageTitle: z.string(),
+      description: z.string(),
+      cases: z.array(
+        z.object({
+          name: z.string(),
+          logo: image(),
+          description: z.string(),
+          cta: z.string()
+        }))
+    })
+  }
+})
 
 export const collections = {
   Blog: blog,
   Homepage: homePage,
+  Case_Studies: caseStudiesPage,
 
   Token_Homepage: tokenPage,
   Deploy_Homepage: deployPage,

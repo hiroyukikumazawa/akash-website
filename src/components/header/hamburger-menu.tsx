@@ -35,6 +35,7 @@ const navigation = [
   { name: "Blog", href: "/blog" },
   { name: "Docs", href: "/docs" },
   { name: "GPU Pricing", href: "/gpus" },
+  { name: "Case Studies", href: "/case-studies" },
 ];
 
 export default function HamburgerMenu({

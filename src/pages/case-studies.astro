@@ -1,0 +1,51 @@
+---
+import Layout from "@/layouts/layout.astro";
+import { Image } from "astro:assets";
+import { getEntryBySlug } from "astro:content";
+
+const caseStudiesPage = await getEntryBySlug("Case_Studies", "index");
+
+const { pageTitle, description, cases } = caseStudiesPage.data;
+---
+
+<Layout title="Case Studies" description="Case Studies">
+  <section class="container mb-10 md:my-10">
+    <div
+      class="border-b border-paraDark pb-[80px] pt-10 md:pb-[120px] md:pt-[64px]"
+    >
+      <!-- title  -->
+
+      <h1
+        class="mx-auto text-center text-3xl font-bold leading-[52px] lg:text-5xl lg:leading-[93.6px]"
+        set:html={pageTitle}
+      />
+
+      <!-- description -->
+      <p
+        class="mx-auto mt-10 max-w-[1024px] text-center text-base leading-[24px] md:mt-6 md:text-xl md:leading-[28px]"
+      >
+        {description}
+      </p>
+
+      <div
+        class="mx-auto mt-20 grid w-fit max-w-[1300px] gap-6 sm:grid-cols-2 md:mt-24 lg:grid-cols-3"
+      >
+        {
+          cases.map((item, index) => (
+            <div class="flex flex-col gap-4 rounded-lg border bg-background2 p-6 md:rounded-xl">
+              <div class="flex gap-4">
+                <Image
+                class=""
+                src={item.logo}
+                alt="Project Case"/>
+                <h2 class="text-xl font-bold">{item.name}</h2>
+              </div>
+              <p class="text-sm">{item.description}</p>
+              <p class="text-sm font-bold text-primary ">{item.cta}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>
