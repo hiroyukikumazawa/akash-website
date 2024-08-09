@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/layout.astro";
 import PricingNavbar from "@/components/pricing-page/pricing-navbar.astro";
-import GpuTable from "@/components/gpu-table/gpu-table";
+import GpuTable from "@/components/pricing-page/gpus/gpu-table";
 import { gpus } from "@/utils/api";
 
 const astroUrl = Astro.url;
@@ -23,6 +23,6 @@ const pathName = astroUrl.pathname.split("/");
       Explorer pricing and calculate<br /> your costs or earnings
     </h1>
     <PricingNavbar pathName={pathName} />
-    <GpuTable client:load initialData={null} pathName={pathName} />
+    <GpuTable client:load initialData={null} />
   </section>
 </Layout>

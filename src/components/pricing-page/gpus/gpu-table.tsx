@@ -17,9 +17,10 @@ import CheckBox from "./checkbox";
 import Filter, { defaultFilters, type Filters } from "./filter";
 import Sort from "./sort";
 import { useStorage } from "@/utils/store";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import Nav from "./nav";
-import arrowUpRight from '../../assets/icons/arrow-up-right.svg';
+import arrowUpRight from '../../../assets/icons/arrow-up-right.svg';
+
 export interface Gpus {
   availability: { total: number; available: number };
   models: Array<{
@@ -42,11 +43,9 @@ export interface Gpus {
 
 const GpuTable = ({
   initialData,
-  pathName,
   subCom,
 }: {
   initialData?: any;
-  pathName?: any;
   subCom?: boolean;
 }) => {
   const queryClient = new QueryClient();
@@ -57,7 +56,6 @@ const GpuTable = ({
         initialData={{
           data: initialData,
         }}
-        pathName={pathName}
         subCom={subCom}
       />
     </QueryClientProvider>
@@ -68,13 +66,11 @@ export default GpuTable;
 
 const Table = ({
   initialData,
-  pathName,
   subCom,
 }: {
   initialData?: {
     data: any;
   };
-  pathName?: any;
   subCom?: boolean;
 }) => {
   const fetchInterval = 1000 * 60;
@@ -102,7 +98,6 @@ const Table = ({
     <Tables
       data={data}
       subCom={subCom}
-      pathName={pathName}
       isLoading={isLoading || isInitialLoading}
     />
   );
