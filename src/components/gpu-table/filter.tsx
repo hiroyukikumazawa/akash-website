@@ -32,7 +32,7 @@ interface Options {
   options: { name: string; value: string }[];
 }
 
-export const availabilitySort = () => {};
+export const availabilitySort = () => { };
 
 export default function Filter({
   setFilteredData,
@@ -141,108 +141,69 @@ export default function Filter({
   }, [filters, res]);
 
   return (
-    <Popover as="div" className="relative inline-block text-left">
-      <div>
-        <Popover.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border bg-background2 px-4 py-2 text-sm font-medium text-textGray shadow-sm">
-          Filter
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-          >
-            <path
-              d="M2.49967 5.83333V3.5C2.49967 2.94772 2.94739 2.5 3.49967 2.5H16.4998C17.052 2.5 17.4997 2.94766 17.4998 3.4999L17.5 5.83333M2.49967 5.83333L7.9838 10.534C8.20544 10.724 8.33301 11.0013 8.33301 11.2933V16.2192C8.33301 16.8698 8.9444 17.3472 9.57554 17.1894L10.9089 16.856C11.354 16.7447 11.6663 16.3448 11.6663 15.8859V11.2933C11.6663 11.0014 11.7939 10.724 12.0156 10.534L17.5 5.83333M2.49967 5.83333H17.5"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </Popover.Button>
-      </div>
-
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Popover.Panel className="absolute left-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-background2 px-4 py-3 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none md:left-auto md:right-0">
-          {options?.map((item) => (
-            <Disclosure
-              as={"div"}
-              className="flex flex-col gap-2 py-2"
-              key={item.name}
-              defaultOpen={filters?.[item.value]?.length > 0 ? true : false}
-            >
-              {({ open }) => (
-                <>
-                  <Disclosure.Button
-                    className={
-                      "group flex items-center gap-1.5  text-sm font-bold text-textGray "
-                    }
-                  >
-                    <ChevronDownIcon
-                      aria-hidden="true"
-                      className={classNames(
-                        open ? " rotate-0 transform" : "-rotate-90",
-                        "h-4 w-4 transition-transform duration-200",
+    <div className="rounded-md border px-5 py-4 shadow-sm w-full bg-white">
+      <p className="pb-3 text-sm font-medium">Filtering Options</p>
+      {options?.map((item) => (
+        <Disclosure
+          as={"div"}
+          className="flex flex-col gap-2 py-2"
+          key={item.name}
+          defaultOpen={filters?.[item.value]?.length > 0 ? true : false}
+        >
+          {({ open }) => (
+            <>
+              <Disclosure.Button
+                className={
+                  "group flex items-center gap-1.5  text-sm font-bold text-textGray "
+                }
+              >
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className={classNames(
+                    open ? " rotate-0 transform" : "-rotate-90",
+                    "h-4 w-4 transition-transform duration-200",
+                  )}
+                />
+                {item.name}
+              </Disclosure.Button>
+              <Disclosure.Panel
+                className={"flex flex-col gap-2 py-2"}
+                as="div"
+              >
+                {item.options.map((option) => (
+                  <div key={option.name}>
+                    <CheckBox
+                      label={option.name}
+                      name={option.value}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFilters((prev) => ({
+                            ...prev,
+                            [item.value]: [
+                              ...prev[item.value],
+                              option.value,
+                            ],
+                          }));
+                        } else {
+                          setFilters((prev) => ({
+                            ...prev,
+                            [item.value]: prev[item.value].filter(
+                              (filter) => filter !== option.value,
+                            ),
+                          }));
+                        }
+                      }}
+                      checked={filters?.[item.value]?.includes(
+                        option.value,
                       )}
                     />
-                    {item.name}
-                  </Disclosure.Button>
-                  <Disclosure.Panel
-                    className={"flex flex-col gap-2 py-2"}
-                    as="div"
-                  >
-                    {item.options.map((option) => (
-                      <div key={option.name}>
-                        <CheckBox
-                          label={option.name}
-                          name={option.value}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setFilters((prev) => ({
-                                ...prev,
-                                [item.value]: [
-                                  ...prev[item.value],
-                                  option.value,
-                                ],
-                              }));
-                            } else {
-                              setFilters((prev) => ({
-                                ...prev,
-                                [item.value]: prev[item.value].filter(
-                                  (filter) => filter !== option.value,
-                                ),
-                              }));
-                            }
-                          }}
-                          checked={filters?.[item.value]?.includes(
-                            option.value,
-                          )}
-                        />
-                      </div>
-                    ))}
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
-          ))}
-
-          <button
-            onClick={() => setFilters(defaultFilters)}
-            className="w-full pt-2 text-left text-sm font-medium text-cardGray "
-          >
-            Clear All
-          </button>
-        </Popover.Panel>
-      </Transition>
-    </Popover>
+                  </div>
+                ))}
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+      ))}
+    </div>
   );
 }

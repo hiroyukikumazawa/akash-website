@@ -56,6 +56,7 @@ module.exports = {
       colors: {
         background: "hsl(var(--background))",
         background2: "hsl(var(--background2))",
+        "background-muted": "hsl(var(--background-muted))",
         foreground: "hsl(var(--foreground))",
         para: "hsl(var(--para))",
         cardGray: "hsl(var(--card-gray))",

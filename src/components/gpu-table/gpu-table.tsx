@@ -19,6 +19,7 @@ import Sort from "./sort";
 import { useStorage } from "@/utils/store";
 import { Skeleton } from "../ui/skeleton";
 import Nav from "./nav";
+import arrowUpRight from '../../assets/icons/arrow-up-right.svg';
 export interface Gpus {
   availability: { total: number; available: number };
   models: Array<{
@@ -73,7 +74,7 @@ const Table = ({
   initialData?: {
     data: any;
   };
-  pathName?:any;
+  pathName?: any;
   subCom?: boolean;
 }) => {
   const fetchInterval = 1000 * 60;
@@ -97,7 +98,6 @@ const Table = ({
   });
 
   const data = result?.data;
-
   return (
     <Tables
       data={data}
@@ -133,61 +133,73 @@ export const Tables = ({
 }) => {
   const [filteredData, setFilteredData] = React.useState<Gpus["models"]>([]);
   const [filters, setFilters] = React.useState<Filters>(defaultFilters);
-  console.log(pathName);
-
-
+  console.log(filteredData)
   return (
     <section
       className={clsx(
-        " mx-auto flex max-w-[1080px]  flex-col gap-8 ",
-        subCom ? "" : "container pt-[80px]",
+        " mx-auto flex max-w-[1380px] gap-10 ",
+        subCom ? "" : "container",
       )}
     >
-      <h1 className="text-2xl font-bold md:block md:text-2lg lg:text-3lg text-center lg:leading-[52px]">
-        Explorer pricing and calculate<br /> your costs or earnings
-      </h1>
-      <Nav pathName={pathName} />
-      {/* <div className="flex flex-col gap-4 ">
-        <div
-          className={clsx(
-            "flex flex-col justify-between gap-8 ",
-            subCom
-              ? "border-b pb-4 lg:flex-row lg:items-center"
-              : "border-b pb-4 md:flex-row md:items-center",
-          )}
-        >
-          <div className="  flex items-center gap-2   ">
-            <h2 className="text-sm font-medium text-linkText">
-              Total Available GPUs
-            </h2>
-            <div className="rounded-md border p-2 shadow-sm ">
-              <span className="text-base font-bold">
-                {data?.availability?.available || 0}
-              </span>
-
-              <span className="ml-2  text-sm text-linkText">
-                (of {data?.availability?.total || 0})
-              </span>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <Filter
-              filters={filters}
-              setFilters={setFilters}
-              setFilteredData={setFilteredData}
-              res={data}
-            />
-            <Sort
-              setFilteredData={setFilteredData}
-              res={data}
-              filters={filters}
-            />
-          </div>
-        </div>
-      </div> */}
       <div
         className={clsx(
-          "flex flex-col gap-4 ",
+          "flex flex-col gap-8 "
+          // ,
+          // subCom
+          //   ? "border-b pb-4 lg:flex-row lg:items-center"
+          //   : "border-b pb-4 md:flex-row md:items-center",
+        )}
+      >
+        <div className="rounded-md border p-5 shadow-sm  flex gap-8 items-center justify-between mt-8 w-[274px] bg-white">
+          <div className="flex flex-col gap-5">
+            <div className="">
+              <h2 className="text-sm font-medium text-linkText">
+                Total GPUs
+              </h2>
+              {
+                isLoading ?
+                  <Skeleton className="h-8 w-20" />
+                  :
+                  <p className="text-2xl font-bold text-black">{data?.availability?.total || 0}</p>
+              }
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1 w-full">
+                <div className="w-3 h-2 rounded-[3px] bg-[#FFD9DB]"></div>
+                {
+                  isLoading ?
+                    <Skeleton className="h-[10px] w-10" />
+                    :
+                    <p className="text-[10px] font-medium"><span className="">{((data?.availability?.available || 0) / (data?.availability?.total || 1) * 100).toFixed(2)}</span>% Available</p>
+                }
+              </div>
+              <div className="flex items-center gap-1 w-full">
+                <div className="w-3 h-2 rounded-[3px] bg-primary"></div>
+                {
+                  isLoading ?
+                    <Skeleton className="h-[10px] w-10" />
+                    :
+                    <p className="text-[10px] font-medium"><span className="">{(100 - ((data?.availability?.available || 0) / (data?.availability?.total || 1) * 100)).toFixed(2)}</span>% Used</p>
+                }
+              </div>
+            </div>
+          </div>
+          <div className="">
+            Round
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <Filter
+            filters={filters}
+            setFilters={setFilters}
+            setFilteredData={setFilteredData}
+            res={data}
+          />
+        </div>
+      </div>
+      <div
+        className={clsx(
+          "flex flex-col gap-4",
           subCom ? "lg:hidden" : "md:hidden",
         )}
       >
@@ -288,14 +300,14 @@ export const Tables = ({
                 </div>
               </div>
               <div className="h-px w-full bg-border"></div>
-              <CustomHoverCard model={model} />
+              {/* <CustomHoverCard model={model} /> */}
             </div>
           ))}
       </div>
 
       <div
         className={clsx(
-          "hidden overflow-x-auto ",
+          "hidden overflow-x-auto w-full",
           subCom ? "lg:block" : "md:block",
         )}
       >
@@ -307,22 +319,17 @@ export const Tables = ({
           cellSpacing={0}
         >
           <thead>
-            <tr>
-              <th className="px-2 text-left text-sm  font-medium tracking-normal  text-linkText">
+            <tr className="w-full">
+              <th className="w-[26%] px-2 text-left text-sm  font-medium tracking-normal  text-linkText ">
                 Chipset
               </th>
-              <th className="px-2 text-left  text-sm font-medium tracking-normal text-linkText">
-                vRAM
-              </th>
-              <th className="px-2 text-left text-sm font-medium tracking-normal text-linkText">
-                Interface
-              </th>
-              <th className="px-2 text-left  text-sm font-medium tracking-normal text-linkText">
+              <th className="w-[26%] px-2 text-left  text-sm font-medium tracking-normal text-linkText">
                 Availability
               </th>
-              <th className="pr-2 text-left  text-sm font-medium tracking-normal text-linkText ">
-                Price (USD/hr)
+              <th className="w-[26%] pr-2 text-left  text-sm font-medium whitespace-nowrap tracking-normal text-linkText ">
+                Price (USD)
               </th>
+              <th className=""></th>
             </tr>
           </thead>
           <tbody className="mt-1 ">
@@ -333,12 +340,8 @@ export const Tables = ({
                   className=" overflow-hidden rounded-lg  bg-background2 shadow-sm"
                 >
                   <td
-                    className={clsx(
-                      " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg",
-                      subCom
-                        ? "w-[30%] lg:w-[27%] xl:w-[35%] 2xl:w-[38%] "
-                        : "w-[30%] lg:w-[38%] xl:w-[39%]",
-                    )}
+                    className=
+                    " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg w-[26%]"
                   >
                     <div className="flex items-center gap-3 capitalize">
                       <Skeleton className="h-5 w-5" />
@@ -346,18 +349,18 @@ export const Tables = ({
                     </div>
                   </td>
 
-                  <td className=" w-[14%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
+                  <td className=" w-[26%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
                     <Skeleton className="h-5 w-20" />
                   </td>
-                  <td className=" w-[14%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
+                  <td className="w-[26%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
                     <Skeleton className="h-5 w-20" />
                   </td>
-                  <td className="w-[14%]  border-y px-2 py-2 text-left">
+                  <td className="border-y border-r rounded-r-lg px-2 py-2 text-left">
                     <p className="flex items-center gap-1.5">
                       <Skeleton className="h-5 w-20" />
                     </p>
                   </td>
-
+                  {/* 
                   <td className="  rounded-r-lg border-y border-r   pr-2 ">
                     <div className="flex flex-col items-start gap-1 ">
                       <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
@@ -390,7 +393,7 @@ export const Tables = ({
                         <Skeleton className="h-5 w-20" />
                       </div>
                     </div>
-                  </td>
+                  </td> */}
                 </tr>
               ))
               : filteredData?.map((model, index) => (
@@ -399,60 +402,104 @@ export const Tables = ({
                   className=" overflow-hidden rounded-lg  bg-background2 shadow-sm"
                 >
                   <td
-                    className={clsx(
-                      " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg",
-                      subCom
-                        ? "w-[30%] lg:w-[27%] xl:w-[35%] 2xl:w-[38%] "
-                        : "w-[30%] lg:w-[38%] xl:w-[39%]",
-                    )}
+                    className=" rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg"
                   >
-                    <div className="flex items-center gap-3 capitalize">
+                    <div className="flex items-center gap-3">
                       <img
                         src="/logos/nvidia.png"
                         alt="nvidia"
-                        className="h-5 "
+                        className="h-5"
                       />
-                      {modifyModel(model?.model)}
+                      <div className="">
+                        <p className="text-xl font-semibold capitalize">{modifyModel(model?.model)}</p>
+                        <p className="text-sm font-medium">{model?.ram} {model?.interface}</p>
+                      </div>
                     </div>
                   </td>
-
-                  <td className=" w-[14%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
-                    {model?.ram}
-                  </td>
-                  <td className=" w-[14%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
-                    {model?.interface}
-                  </td>
-                  <td className="w-[14%]  border-y px-2 py-2 text-left">
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-sm  font-semibold text-foreground">
-                        {model?.availability?.available}
+                  <td className="pr-8 border-y">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold ">
+                        {model?.availability?.available} Available
                       </span>
-                      <span className=" text-xs text-iconText">
-                        (of {model?.availability?.total})
+                      <span className="text-sm text-iconText">
+                        (out of {model?.availability?.total})
                       </span>
-                    </p>
+                    </div>
+                    <div className=""></div>
                   </td>
-
-                  <td className="  rounded-r-lg border-y border-r   pr-2 ">
-                    <CustomHoverCard model={model} />
+                  <td className="pl-4 border-y">
+                    <div className="flex justify-between">
+                      <span className="font-semibold ">
+                        Average price:
+                      </span>
+                      <span className="font-semibold ">
+                        ${model?.price?.avg || 0}
+                      </span>
+                    </div>
+                    <HoverCard openDelay={2} closeDelay={2}>
+                      <HoverCardTrigger className="pt-1.5 flex justify-between items-center">
+                        <span className="text-sm font-medium text-iconText">
+                          Min: ${model?.price?.min || 0}
+                        </span>
+                        <span className="text-sm font-medium text-iconText">
+                          -
+                        </span>
+                        <span className="text-sm font-medium text-iconText">
+                          Max: ${model?.price?.max || 0}
+                        </span>
+                        <Info size={12} className="text-[#D7DBDF] dark:text-[#3E3E3E]" />
+                      </HoverCardTrigger>
+                      <HoverCardContent align="center">
+                        <div className="flex flex-col">
+                          <div className="flex flex-col px-4 py-3">
+                            <h1 className="text-sm font-medium ">
+                              {model?.providerAvailability?.available || 0} providers{" "}
+                              <br />
+                              offering this model
+                            </h1>
+                            <div className="mt-4  flex items-center justify-between gap-2">
+                              <div className="flex flex-col items-center justify-center gap-1">
+                                <h1 className="text-xs text-iconText">Max:</h1>
+                                <div className="text-base font-bold ">
+                                  {price(model?.price?.max)}/hr
+                                </div>
+                              </div>
+                              <div className="h-8 w-px border-r "></div>
+                              <div className="flex flex-col items-center justify-center gap-1">
+                                <h1 className="text-xs text-iconText">Min:</h1>
+                                <div className="text-base font-bold ">
+                                  {price(model?.price?.min)}/hr
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center  justify-between gap-2 rounded-b-md border-t bg-badgeColor px-4 py-3">
+                            <p className="text-base  text-para">Avg:</p>
+                            <div className="text-base font-bold  ">
+                              {price(model?.price?.weightedAverage)}/hr
+                            </div>
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                  </td>
+                  <td className="text-center border-y border-r rounded-r-lg">
+                    <a
+                      id={`${model?.model}-(gpu-rent)`}
+                      href={`https://console.akash.network/rent-gpu?vendor=${model?.vendor}&gpu=${model?.model}&interface=${model?.interface}&vram=${model?.ram}`}
+                      target="_blank"
+                      className=" rounded-md bg-[#272626] py-2 px-4 inline-flex gap-1.5"
+                    >
+                      <p className="text-xs font-medium text-white">Rent Now</p>
+                      <img src={arrowUpRight.src} alt="" />
+                    </a>
                   </td>
                 </tr>
               ))}
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-linkText">
-        *Disclaimer: The pricing displayed is determined by a dynamic bidding
-        engine, where providers compete to offer their compute resources. These
-        prices offer transparency and insight into the spectrum of pricing
-        options available within the Akash marketplace. Please be aware that the
-        prices displayed are subject to change based on real-time market
-        conditions and individual provider offerings. As such, users are
-        encouraged to review all available pricing information carefully and
-        consider their specific requirements before making any decisions or
-        commitments.
-      </p>
-    </section>
+    </section >
   );
 };
 
