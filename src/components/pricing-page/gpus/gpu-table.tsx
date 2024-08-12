@@ -139,10 +139,6 @@ export const Tables = ({
       <div
         className={clsx(
           "flex flex-col gap-8 "
-          // ,
-          // subCom
-          //   ? "border-b pb-4 lg:flex-row lg:items-center"
-          //   : "border-b pb-4 md:flex-row md:items-center",
         )}
       >
         <div className="rounded-md border p-5 shadow-sm  flex gap-8 items-center justify-between mt-8 w-[274px] bg-white">
@@ -339,56 +335,34 @@ export const Tables = ({
                     " rounded-l-lg  border-y border-l px-2 py-2 text-base font-semibold  xl:px-4  xl:text-lg w-[26%]"
                   >
                     <div className="flex items-center gap-3 capitalize">
-                      <Skeleton className="h-5 w-5" />
-                      <Skeleton className="h-5 w-20" />
+                      <Skeleton className="h-5 w-7" />
+                      <div className="">
+                        <Skeleton className="h-7 w-20" />
+                        <Skeleton className="h-5 w-20" />
+                      </div>
                     </div>
                   </td>
 
-                  <td className=" w-[26%]  border-y px-2 py-2 text-left text-sm font-medium text-para">
-                    <Skeleton className="h-5 w-20" />
-                  </td>
-                  <td className="w-[26%] border-y px-2 py-2 text-left  text-sm font-medium text-para">
-                    <Skeleton className="h-5 w-20" />
-                  </td>
-                  <td className="border-y border-r rounded-r-lg px-2 py-2 text-left">
-                    <p className="flex items-center gap-1.5">
+                  <td className=" w-[26%] border-y pr-8">
+                    <div className=" flex justify-between items-center">
                       <Skeleton className="h-5 w-20" />
-                    </p>
-                  </td>
-                  {/* 
-                  <td className="  rounded-r-lg border-y border-r   pr-2 ">
-                    <div className="flex flex-col items-start gap-1 ">
-                      <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-                        <Skeleton className="h-5 w-20" />
-                      </div>
-                      <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
-                        <div className="flex items-center gap-1">
-                          <HoverCard openDelay={2} closeDelay={2}>
-                            <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
-                              <p className="flex items-center">
-                                <span
-                                  className="dark:text-[#3 E3E3E] text-base
-                        text-[#D7DBDF] md:text-xs"
-                                >
-                                  Avg:
-                                </span>
-                                <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
-                                  <Skeleton className="h-5 w-20" />
-                                </span>
-                              </p>
-                              <Info
-                                size={12}
-                                className="text-[#D7DBDF] dark:text-[#3E3E3E]"
-                              />
-                            </HoverCardTrigger>
-                          </HoverCard>
-                        </div>
-                      </div>
-                      <div className="rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-                        <Skeleton className="h-5 w-20" />
-                      </div>
+                      <Skeleton className="h-5 w-20" />
                     </div>
-                  </td> */}
+                  </td>
+                  <td className="w-[26%] pl-4 border-y">
+                    <div className="flex justify-between">
+                      <Skeleton className="h-6 w-20" />
+                      <Skeleton className="h-6 w-20" />
+                    </div>
+                    <div className="pt-1.5 flex justify-between items-center">
+                      <Skeleton className="h-5 w-16"></Skeleton>
+                      <Skeleton className="h-5 w-16"></Skeleton>
+                      <Skeleton className="h-3 w-3"></Skeleton>
+                    </div>
+                  </td>
+                  <td className="text-center border-y border-r rounded-r-lg">
+                    <Skeleton className="h-8 w-24 mx-auto" />
+                  </td>
                 </tr>
               ))
               : filteredData?.map((model, index) => (
@@ -498,75 +472,75 @@ export const Tables = ({
   );
 };
 
-const CustomHoverCard = ({ model }: { model: Gpus["models"][0] }) => {
-  return (
-    <div className="flex flex-col items-start gap-1 ">
-      <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-white to-white/20 dark:from-background2 dark:to-background2/20"></div> */}
-        Min: {price(model?.price?.min)}
-      </div>
-      <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
-        <div className="flex items-center gap-1">
-          <HoverCard openDelay={2} closeDelay={2}>
-            <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
-              <p className="flex items-center">
-                <span className="text-base text-[#D7DBDF] dark:text-[#3E3E3E] md:text-xs">
-                  Avg:
-                </span>
-                <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
-                  {price(model?.price?.weightedAverage)}
-                </span>
-              </p>
-              <Info size={12} className="text-[#D7DBDF] dark:text-[#3E3E3E]" />
-            </HoverCardTrigger>
-            <HoverCardContent align="center">
-              <div className="flex flex-col">
-                <div className="flex flex-col px-4 py-3">
-                  <h1 className="text-sm font-medium ">
-                    {model?.providerAvailability?.available || 0} providers{" "}
-                    <br />
-                    offering this model
-                  </h1>
-                  <div className="mt-4  flex items-center justify-between gap-2">
-                    <div className="flex flex-col items-center justify-center gap-1">
-                      <h1 className="text-xs text-iconText">Max:</h1>
-                      <div className="text-base font-bold ">
-                        {price(model?.price?.max)}/hr
-                      </div>
-                    </div>
-                    <div className="h-8 w-px border-r "></div>
-                    <div className="flex flex-col items-center justify-center gap-1">
-                      <h1 className="text-xs text-iconText">Min:</h1>
-                      <div className="text-base font-bold ">
-                        {price(model?.price?.min)}/hr
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center  justify-between gap-2 rounded-b-md border-t bg-badgeColor px-4 py-3">
-                  <p className="text-base  text-para">Avg:</p>
-                  <div className="text-base font-bold  ">
-                    {price(model?.price?.weightedAverage)}/hr
-                  </div>
-                </div>
-              </div>
-            </HoverCardContent>
-          </HoverCard>
-        </div>
-        <div className="h-4 w-px  bg-para"></div>
-        <a
-          id={`${model?.model}-(gpu-rent)`}
-          href={`https://console.akash.network/rent-gpu?vendor=${model?.vendor}&gpu=${model?.model}&interface=${model?.interface}&vram=${model?.ram}`}
-          target="_blank"
-          className=" text-base font-medium text-white dark:text-black md:text-xs"
-        >
-          Rent Now
-        </a>
-      </div>
-      <div className=" rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
-        Max: {price(model?.price?.max)}
-        {/* <div className="absolute inset-0 bg-gradient-to-t from-white to-white/20 dark:from-background2 dark:to-background2/20"></div> */}
-      </div>
-    </div>
-  );
-};
+// const CustomHoverCard = ({ model }: { model: Gpus["models"][0] }) => {
+//   return (
+//     <div className="flex flex-col items-start gap-1 ">
+//       <div className="rounded-x-md relative min-w-[170px]  rounded-b-md border-x border-b px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
+//         {/* <div className="absolute inset-0 bg-gradient-to-b from-white to-white/20 dark:from-background2 dark:to-background2/20"></div> */}
+//         Min: {price(model?.price?.min)}
+//       </div>
+//       <div className="flex  w-full items-center justify-center gap-2.5   rounded-md bg-black px-2 py-2 dark:bg-[#EDEDED] md:w-auto ">
+//         <div className="flex items-center gap-1">
+//           <HoverCard openDelay={2} closeDelay={2}>
+//             <HoverCardTrigger className="flex cursor-pointer items-center gap-1">
+//               <p className="flex items-center">
+//                 <span className="text-base text-[#D7DBDF] dark:text-[#3E3E3E] md:text-xs">
+//                   Avg:
+//                 </span>
+//                 <span className="pl-1 text-base font-bold text-white dark:text-black  md:text-xs">
+//                   {price(model?.price?.weightedAverage)}
+//                 </span>
+//               </p>
+//               <Info size={12} className="text-[#D7DBDF] dark:text-[#3E3E3E]" />
+//             </HoverCardTrigger>
+//             <HoverCardContent align="center">
+//               <div className="flex flex-col">
+//                 <div className="flex flex-col px-4 py-3">
+//                   <h1 className="text-sm font-medium ">
+//                     {model?.providerAvailability?.available || 0} providers{" "}
+//                     <br />
+//                     offering this model
+//                   </h1>
+//                   <div className="mt-4  flex items-center justify-between gap-2">
+//                     <div className="flex flex-col items-center justify-center gap-1">
+//                       <h1 className="text-xs text-iconText">Max:</h1>
+//                       <div className="text-base font-bold ">
+//                         {price(model?.price?.max)}/hr
+//                       </div>
+//                     </div>
+//                     <div className="h-8 w-px border-r "></div>
+//                     <div className="flex flex-col items-center justify-center gap-1">
+//                       <h1 className="text-xs text-iconText">Min:</h1>
+//                       <div className="text-base font-bold ">
+//                         {price(model?.price?.min)}/hr
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//                 <div className="flex items-center  justify-between gap-2 rounded-b-md border-t bg-badgeColor px-4 py-3">
+//                   <p className="text-base  text-para">Avg:</p>
+//                   <div className="text-base font-bold  ">
+//                     {price(model?.price?.weightedAverage)}/hr
+//                   </div>
+//                 </div>
+//               </div>
+//             </HoverCardContent>
+//           </HoverCard>
+//         </div>
+//         <div className="h-4 w-px  bg-para"></div>
+//         <a
+//           id={`${model?.model}-(gpu-rent)`}
+//           href={`https://console.akash.network/rent-gpu?vendor=${model?.vendor}&gpu=${model?.model}&interface=${model?.interface}&vram=${model?.ram}`}
+//           target="_blank"
+//           className=" text-base font-medium text-white dark:text-black md:text-xs"
+//         >
+//           Rent Now
+//         </a>
+//       </div>
+//       <div className=" rounded-x-md relative min-w-[170px]  rounded-t-md border-x border-t px-2 py-1 text-sm font-medium md:min-w-[100px] md:text-xs">
+//         Max: {price(model?.price?.max)}
+//         {/* <div className="absolute inset-0 bg-gradient-to-t from-white to-white/20 dark:from-background2 dark:to-background2/20"></div> */}
+//       </div>
+//     </div>
+//   );
+// };

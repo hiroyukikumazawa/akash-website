@@ -16,13 +16,22 @@ const pathName = astroUrl.pathname.split("/");
   image="/meta-images/gpus.png"
 >
   <section
-    class ="mx-auto flex max-w-[1380px]  flex-col gap-[72px] container pt-[100px]">
+    class="container mx-auto flex max-w-[1380px] flex-col gap-[72px] pt-[100px]"
+  >
     <h1
       class="text-center text-2xl font-bold md:block md:text-2lg lg:text-3lg lg:leading-[52px]"
     >
       Explorer pricing and calculate<br /> your costs or earnings
     </h1>
     <PricingNavbar pathName={pathName} />
+    <div class="">
+      <h2 class="text-center text-2xl font-bold md:block md:text-3xl">
+        GPU Models, Prices & Availabilty
+      </h2>
+      <p class="text-center leading-[28px]">
+        Browse the list of available GPUs along with their hourly rates.
+      </p>
+    </div>
     <GpuTable client:load initialData={null} />
   </section>
 </Layout>

@@ -19,6 +19,7 @@ import Compare from "./compare";
 import akashLogo from '../../../assets/akash-logo-primary.svg'
 import ProgressBar from "./progress-bar";
 import Disclaimer from "./disclaimer";
+import UsageAmount from "./usage-amount";
 export interface Gpus {
   availability: { total: number; available: number };
   models: Array<{
@@ -176,102 +177,25 @@ export const Tables = ({
           <Compare />
         </div>
       </div>
-      <div className="rounded-md border p-6 shadow-sm  flex flex-col gap-6 w-full bg-white">
-        <p className="text-sm font-medium">Usage estimate</p>
-        <div className="flex flex-col gap-5">
-          <div className="">
-            <h2 className="text-2xl font-semibold text-black">CPU</h2>
-            <p className="text-sm font-medium">(Amount of vCPU's)</p>
+      <div className="w-full">
+
+        <div className="rounded-md border p-6 shadow-sm  flex flex-col gap-6 w-full bg-white">
+          <p className="text-sm font-medium">Usage estimate</p>
+          <UsageAmount
+            title="CPU"
+            content="(Amount of vCPU's)" />
+          <UsageAmount
+            title="Memory"
+            content="(Amount of memory)" />
+          <UsageAmount
+            title="Ephemeral Storage"
+            content="(Amount of ephemeral disk storage)" />
+          <UsageAmount
+            title="Persistent Storage"
+            content="(Amount of persistent disk storage)" />
+          <div className="flex justify-end">
+            <Disclaimer />
           </div>
-          <div className="flex justify-between items-center gap-5 ">
-            <div className="relative w-full">
-              <ProgressBar
-                progress={progress} />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progress}
-                onChange={handleInputChange}
-                className="w-full top-0 left-0 absolute opacity-0 cursor-pointer"
-              />
-            </div>
-            <div className="rounded-md border px-5 py-3 shadow-sm  text-center bg-white text-[21px] leading-[28px] font-semibold text-black">
-              240
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="">
-            <h2 className="text-2xl font-semibold text-black">Memory</h2>
-            <p className="text-sm font-medium">(Amount of memory)</p>
-          </div>
-          <div className="flex justify-between items-center gap-5 ">
-            <div className="relative w-full">
-              <ProgressBar
-                progress={progress} />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progress}
-                onChange={handleInputChange}
-                className="w-full top-0 left-0 absolute opacity-0 cursor-pointer"
-              />
-            </div>
-            <div className="rounded-md border px-5 py-3 shadow-sm  text-center bg-white text-[21px] leading-[28px] font-semibold text-black">
-              240
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="">
-            <h2 className="text-2xl font-semibold text-black">Ephemeral Storage</h2>
-            <p className="text-sm font-medium">(Amount of ephemeral disk storage)</p>
-          </div>
-          <div className="flex justify-between items-center gap-5 ">
-            <div className="relative w-full">
-              <ProgressBar
-                progress={progress} />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progress}
-                onChange={handleInputChange}
-                className="w-full top-0 left-0 absolute opacity-0 cursor-pointer"
-              />
-            </div>
-            <div className="rounded-md border px-5 py-3 shadow-sm  text-center bg-white text-[21px] leading-[28px] font-semibold text-black">
-              240
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="">
-            <h2 className="text-2xl font-semibold text-black">Persistent Storage</h2>
-            <p className="text-sm font-medium">(Amount of persistent disk storage)</p>
-          </div>
-          <div className="flex justify-between items-center gap-5 ">
-            <div className="relative w-full">
-              <ProgressBar
-                progress={progress} />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progress}
-                onChange={handleInputChange}
-                className="w-full top-0 left-0 absolute opacity-0 cursor-pointer"
-              />
-            </div>
-            <div className="rounded-md border px-5 py-3 shadow-sm  text-center bg-white text-[21px] leading-[28px] font-semibold text-black">
-              240
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <Disclaimer />
         </div>
       </div>
     </section >
